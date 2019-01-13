@@ -18,12 +18,16 @@ Our input string from the challenge is in octal encoding format:
 ```
 
 decoding it we get a base32 encoded string:
+```
 MJRWKZTHGFTTEIDEMVTCAYTDNIQGCYTDMRSWMZZRM4ZCAZZRM4ZCAYLKNQQGCYTDMRSWM3JAMFUWYIDCMNSWMZZRM4ZCAZZRM4ZCAYLCMNSGKIDBMRVGWIDCMNVCAZLGM4YWU3JAM4YWOMRAMFRGGZDFEBSWMZZRNJWSAYLDMRTTE2BAMFRGGZDJNQQGOMLHGIQGCY3EMVTGOMRAMFRGKZTHGFTTEIDBMRSWMZZRM4ZCAYLCMNSGOMTJNQQGOMLHGIQGCY3EMVTGOMRAMFRGGZDFEBQWEZLGM4YWOMRAMJRWIZLGEA=====
+```
 
 decoding this one again we get a “14 segment” encoded string:
+```
 bcefg1g2 def bcj abcdefg1g2 g1g2 ajl abcdefm ail bcefg1g2 g1g2 abcde adjk bcj efg1jm g1g2 abcde efg1jm acdg2h abcdil g1g2 acdefg2 abefg1g2 adefg1g2 abcdg2il g1g2 acdefg2 abcde abefg1g2 bcdef
+```
 
 Using the decoder from http://kryptografie.de/kryptografie/chiffre/14-segment.htm we get the flag:
-HL18-7QTH-JZ1K-JKSD-GPEB-GJPU
+```HL18-7QTH-JZ1K-JKSD-GPEB-GJPU```
 
 
