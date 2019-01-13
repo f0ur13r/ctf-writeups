@@ -34,16 +34,18 @@ Using the decoder from http://kryptografie.de/kryptografie/chiffre/14-segment.ht
 ```HL18-7QTH-JZ1K-JKSD-GPEB-GJPU```
 
 ## day 03
-Solution:
+**Solution:**
 
 Analysing the page source we found a hex encoded string. The first part was a trick but decoding the second part
+
 ```\x43\x6F\x6E\x67\x72\x61\x74\x75\x6C\x61\x74\x69\x6F\x6E\x73\x21\x0A\x0A\x59\x6F\x75\x20\x67\x6F\x74\x20\x74\x68\x65\x20\x66\x6C\x61\x67\x3A\x20\x48\x56\x31\x38\x2D\x70\x46\x41\x54\x2D\x4F\x31\x44\x6C\x2D\x48\x6A\x56\x70\x2D\x6A\x4A\x4E\x45\x2D\x5A\x6A\x75\x38```
+
 we get our flag:
 
 ```HV18-pFAT-O1Dl-HjVp-jJNE-Zju8```
 
 ## day 04
-Solution:
+**Solution:**
 
 Using the tool dial-a-pirate from the old game monkey island you can get the requested years by combining the faces.
 
@@ -58,7 +60,7 @@ Flag:
 ```HV18-5o9x-4geL-7hkJ-wc4A-xp8F```
 
 ## day 05
-Solution:
+**Solution:**
 
 Using crt.sh and criteria “%hackvent.org” you get certificates for osintiscoolisntit.hackvent.org and www.hackvent.org
 
@@ -67,7 +69,7 @@ You can find the flag by browsing to osintiscoolisntit.hackvent.org:
 ```HV18-0Sin-tI5S-R34l-lyC0-oo0L```
 
 ## day 06
-Solution:
+**Solution:**
 
 Piet (named after painter Piet Mondrian) is one of the most known esoteric programming languages, which uses images as source code.
 
@@ -175,4 +177,135 @@ Decoding the new image with a qr decoder we get the flag:
 
 ```HV18-$$nn-@@11-LLr0-B1ne```
 
+## day 09
+**Solution:**
 
+A png with a yellow ball is given: https://hackvent.hacking-lab.com/medium-64.png
+I spent long time looking for some interesting strings in the png but nothing unusual.
+Then I found the second yellow xmas ball in the challenge description:
+https://hackvent.hacking-lab.com/img/medium_64.png
+
+I used imagemick to get the difference between the two images:
+```compare medium_64.png medium-64.png -compose src diff.png```
+
+The output image diff.png is obiviously a qrcode which has to be adjusted using GIMP or another tool. Converting to RGB, cropping and inverting colors we can decode it using a qr decoder.
+
+Flag:
+
+HV18-PpTR-Qri5-3nOI-n51a-42gJ
+
+## day 11
+**Solution:**
+
+Similiar challenge to last year.
+If you use a solution from last year you get:
+485631382d4288bb2cdf615fc4576b25ba2ee4c74f5e8598ba6bbdfae8f
+First part looks good since 485631382d is "HV18-" but the rest doesn't make sense.
+
+The solution is to try to add the modulo "p" to "a" x number of times.
+I’ve used the script from author mcia and brute forced till I get a valid flag starting with  485631382d.
+
+```python
+#!/usr/bin/env python3
+
+# source Hackvent solution 2017, author mcia
+import gmpy2
+import codecs
+
+def int_to_text(number):
+    return codecs.decode(format(number, 'x'), 'hex').decode('utf-8')
+
+''' c = (a * b) % p '''
+c=0x7E65D68F84862CEA3FCC15B966767CCAED530B87FC4061517A1497A03D2
+p=0xDD8E05FF296C792D2855DB6B5331AF9D112876B41D43F73CEF3AC7425F9
+b=0x7BBE3A50F28B2BA511A860A0A32AD71D4B5B93A8AE295E83350E68B57E5
+
+# if you add the modulo x times the result is still valid
+# a = c * inv % p + n * p
+
+inv = gmpy2.invert(b,p)
+# let's iterate and search for a valid flag starting with 485631382d (HV18-)
+for i in range(1,3000):
+  a = c * inv % p + (i * p)
+  a = hex(a).lstrip("0x")
+  if a[:10] == "485631382d":
+    print("flag: ", a)
+    print("multiplier: ", i)
+    break
+```
+
+Converting 485631382d784c76592d54654e542d596745682d7742754c2d6246667a0000 to ascii we get the flag:
+
+```HV18-xLvY-TeNT-YgEh-wBuL-bFfz```
+
+
+## day 14
+**Description:**
+
+seems to be an easy one … or wait, what?
+Encrypted flag:
+
+*2A4C9AA52257B56837369D5DD7019451C0EC04427EB95EB741D0273D55*
+
+Attached ps script:
+```
+. "$PSScriptRoot\flag.ps1" #thumbprint 1398ED7F59A62962D5A47DD0D32B71156DD6AF6B46BEA949976331B8E1
+
+if ($PSVersionTable.PSVersion.Major -gt 2)
+{
+    $m = [System.Numerics.BigInteger]::Parse($flag, 'AllowHexSpecifier');
+    $n = [System.Numerics.BigInteger]::Parse("0D8A7A45D9BE42BB3F03F710CF105628E8080F6105224612481908DC721", 'AllowHexSpecifier');
+    $c = [System.Numerics.BigInteger]::ModPow($m, 1+1, $n)
+    write-host "encrypted flag:" $c.ToString("X");
+}
+```
+
+**Solution:**
+
+The challenge was about Rabin cryptosystem.
+
+# https://en.wikipedia.org/wiki/Rabin_cryptosystem
+# as RSA with e=2
+
+
+```python
+# original script source http://n3k0sec.top/2018/02/09/RSA%E4%BE%8B%E9%A2%98
+import gmpy2
+import codecs
+
+def run(m):
+    m=hex(m)[2:]
+    if len(m)%2==1:
+        m='0'+m
+    print(codecs.decode(m,'hex_codec'))
+
+n=5841003248923821029983205516125362074880976378154066185495120324708129
+e=2
+# factorize n to p and q using factordb.com or rypttool
+#http://factordb.com/index.php?query=5841003248923821029983205516125362074880976378154066185495120324708129
+p=73197682537506302133452713613304371
+q=79797652691134123797009598697137499
+c=1140385111472943454874627320369403984972910918371637407390282283433301
+
+M1=q
+M2=p
+M_1=gmpy2.invert(M1,M2)
+M_2=gmpy2.invert(M2,M1)
+
+a1=pow(c,(p+1)//4,p)
+a2=pow(c,(q+1)//4,q)
+
+x1=(a1*M1*M_1+a2*M2*M_2)%n
+x2=(a1*M1*M_1-a2*M2*M_2)%n
+x3=n-x1
+x4=n-x2
+
+run(x1)
+run(x2)
+run(x3)
+run(x4)
+```
+
+Flag:
+
+```HV18-DzKn-62Qz-dAab-fEou-ImjY```
