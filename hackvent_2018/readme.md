@@ -1,6 +1,6 @@
 # hackvent 2018
 
-## day 01 - Just Another Bar Code
+## day 01: Just Another Bar Code
 **Description:**
 
 After a decade of monochromity, Santa has finally updated his infrastructure with color displays. With the new color code, the gift logistic robots can now handle many more gifts:
@@ -16,7 +16,7 @@ Using a JAB code decoder (https://jabcode.org/scan) we get the flag:
 
 ```HV18-L3ts-5t4r-7Th3-Phun-G33k```
 
-## day 02 - Me
+## day 02: Me
 **Solution:**
 
 Our input string from the challenge is in octal encoding format:
@@ -35,7 +35,7 @@ Using the decoder from http://kryptografie.de/kryptografie/chiffre/14-segment.ht
 
 ```HL18-7QTH-JZ1K-JKSD-GPEB-GJPU```
 
-## day 03 - Catch me
+## day 03: Catch me
 **Solution:**
 
 Analysing the page source we found a hex encoded string. The first part was a trick but decoding the second part
@@ -46,7 +46,7 @@ we get our flag:
 
 ```HV18-pFAT-O1Dl-HjVp-jJNE-Zju8```
 
-## day 04 - pirating like in the 90ies
+## day 04: pirating like in the 90ies
 **Solution:**
 
 Using the tool dial-a-pirate from the old game monkey island you can get the requested years by combining the faces.
@@ -61,7 +61,7 @@ Flag:
 
 ```HV18-5o9x-4geL-7hkJ-wc4A-xp8F```
 
-## day 05 - OSINT 1
+## day 05: OSINT 1
 **Solution:**
 
 Using crt.sh and criteria “%hackvent.org” you get certificates for osintiscoolisntit.hackvent.org and www.hackvent.org
@@ -70,7 +70,7 @@ You can find the flag by browsing to osintiscoolisntit.hackvent.org:
 
 ```HV18-0Sin-tI5S-R34l-lyC0-oo0L```
 
-## day 06 - Mondrian 
+## day 06: Mondrian 
 **Solution:**
 
 Piet (named after painter Piet Mondrian) is one of the most known esoteric programming languages, which uses images as source code.
@@ -79,7 +79,7 @@ Using the piet code decoder (https://www.bertnase.de/npiet/npiet-execute.php) on
 
 ```HV18-M4ke-S0m3-R3Al-N1c3-artZ```
 
-## day 07 - flappy.pl
+## day 07: flappy.pl
 **Solution:**
 
 The perl script is a flappy bird game.  You have to pass the gates using the space key to get all the flags.
@@ -90,7 +90,7 @@ Flag:
 
 ```HV18-bMnF-racH-XdMC-xSJJ-I2fL```
 
-## day 08 - Advent Snail
+## day 08: Advent Snail
 **Solution:**
 
 I assumed the box represents a qrcode, just not in the right order.
@@ -179,7 +179,7 @@ Decoding the new image with a qr decoder we get the flag:
 
 ```HV18-$$nn-@@11-LLr0-B1ne```
 
-## day 09 - fake xmass balls
+## day 09: fake xmass balls
 **Solution:**
 
 A png with a yellow ball is given: https://hackvent.hacking-lab.com/medium-64.png
@@ -190,13 +190,13 @@ https://hackvent.hacking-lab.com/img/medium_64.png
 I used imagemick to get the difference between the two images:
 ```compare medium_64.png medium-64.png -compose src diff.png```
 
-The output image diff.png is obiviously a qrcode which has to be adjusted using GIMP or another tool. Converting to RGB, cropping and inverting colors we can decode it using a qr decoder.
+The output image diff.png is obiviously a qrcode which has to be tweaked using GIMP or another tool. Converting to RGB, cropping and inverting colors we can decode it using a qr decoder.
 
 Flag:
 
 ```HV18-PpTR-Qri5-3nOI-n51a-42gJ```
 
-## day 10 - _ Run, Node, Run
+## day 10: _ Run, Node, Run
 **Description:**
 
 Santa has practiced his nodejs skills and wants his little elves to practice it as well, so the kids can get the web-app they wish for.
@@ -246,7 +246,7 @@ We get the flag from config.json:
 }
 ```
 
-## day 11 - Crypt-o-Math 3.0
+## day 11: Crypt-o-Math 3.0
 **Solution:**
 
 Similiar challenge to last year.
@@ -292,7 +292,7 @@ Converting **485631382d784c76592d54654e542d596745682d7742754c2d6246667a0000** to
 
 ```HV18-xLvY-TeNT-YgEh-wBuL-bFfz```
 
-## day 13 - flappy’s revenge
+## day 13: flappy’s revenge
 **Solution:**
 
 I wrote a python script which is not very effective but I get the flag after many tries.
@@ -304,7 +304,7 @@ Flag:
 
 
 
-## day 14 - power in the shell
+## day 14: power in the shell
 **Description:**
 
 seems to be an easy one … or wait, what?
@@ -373,7 +373,7 @@ Flag:
 
 ```HV18-DzKn-62Qz-dAab-fEou-ImjY```
 
-## day 16 - Pay 100 Bitcoins
+## day 16: Pay 100 Bitcoins
 **Description:**
 
 It changed the host. Fortunately it doesn’t do the full job … so there’s hope. Get the things straight again and find the flag.
